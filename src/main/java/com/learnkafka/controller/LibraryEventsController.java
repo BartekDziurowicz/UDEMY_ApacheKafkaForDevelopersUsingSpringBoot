@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeoutException;
 
 @RestController
 @Slf4j
@@ -24,16 +23,13 @@ public class LibraryEventsController {
     LibraryEventProducer libraryEventProducer;
 
     @PostMapping("/v1/libraryevent")
-    public ResponseEntity<LibraryEvent> postLibraryEvent(@RequestBody @Valid LibraryEvent libraryEvent) throws JsonProcessingException, ExecutionException, InterruptedException, TimeoutException {
+    public ResponseEntity<LibraryEvent> postLibraryEvent(@RequestBody @Valid LibraryEvent libraryEvent) throws JsonProcessingException, ExecutionException, InterruptedException {
 
         //invoke kafka producer
         libraryEvent.setLibraryEventType(LibraryEventType.NEW);
-        //libraryEventProducer.sendLibraryEvent(libraryEvent);
         libraryEventProducer.sendLibraryEvent_Send(libraryEvent);
-        //libraryEventProducer.sendLibraryEventSynchronous(libraryEvent);
-
         return ResponseEntity.status(HttpStatus.CREATED).body(libraryEvent);
     }
 
-    //PUT - do UPDATE, nie napisane
+    //PUT
 }
